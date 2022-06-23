@@ -31,6 +31,7 @@ var (
 	commonGlobalCflags = []string{
 		// Enable some optimization by default.
 		"-O2",
+		"-O3"
 
 		// Warnings enabled by default. Reference:
 		// https://clang.llvm.org/docs/DiagnosticsReference.html
