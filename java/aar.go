@@ -1,4 +1,5 @@
 // Copyright 2018 Google Inc. All rights reserved.
+// Copyright 2022 Project Kaleidoscope. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -126,6 +127,7 @@ type aapt struct {
 	hasNoCode                          bool
 	LoggingParent                      string
 	resourceFiles                      android.Paths
+	appendResourceZips                 android.Paths
 
 	splitNames []string
 	splits     []split
@@ -416,18 +418,7 @@ func (a *aapt) buildActions(ctx android.ModuleContext, opts aaptBuildActionOptio
 		linkFlags = append(linkFlags, "--static-lib")
 	}
 
-	if a.isLibrary && a.useResourceProcessorBusyBox() {
-		// When building an android_library using ResourceProcessorBusyBox the resources are merged into
-		// package-res.apk with --merge-only, but --no-static-lib-packages is not used so that R.txt only
-		// contains resources from this library.
-		linkFlags = append(linkFlags, "--merge-only")
-	} else {
-		// When building and app or when building an android_library without ResourceProcessorBusyBox
-		// --no-static-lib-packages is used to put all the resources into the app.  If ResourceProcessorBusyBox
-		// is used then the app's R.txt will be post-processed along with the R.txt files from dependencies to
-		// sort resources into the right packages in R.class.
-		linkFlags = append(linkFlags, "--no-static-lib-packages")
-	}
+	resZips = append(resZips, a.appendResourceZips...)
 
 	packageRes := android.PathForModuleOut(ctx, "package-res.apk")
 	proguardOptionsFile := android.PathForModuleGen(ctx, "proguard.options")
