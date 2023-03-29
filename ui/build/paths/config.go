@@ -107,6 +107,7 @@ var Configuration = map[string]PathConfig{
 	"javap":          Allowed,
 	"locale":         Allowed,
 	"ld.lld":         Allowed,
+	"llvm-addr2line": Allowed,
 	"llvm-ar":        Allowed,
 	"lsof":           Allowed,
 	"nproc":          Allowed,
@@ -129,8 +130,6 @@ var Configuration = map[string]PathConfig{
 	"tr":             Allowed,
 	"unzip":          Allowed,
 	"zip":            Allowed,
-	"arm-linux-androidkernel-as": Allowed,
-	"arm-linux-androidkernel-ld": Allowed,
 
 	// Host toolchain is removed. In-tree toolchain should be used instead.
 	// GCC also can't find cc1 with this implementation.
